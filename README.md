@@ -14,7 +14,7 @@
 # About Website
 - The input can be provide in the each box with the keyboards only.
 ![Sudoku Unsolved](Images/sudokuUnsolved.PNG)
-![Sudoku Solved](Images/sudokuSolved.PNG)
+![Sudoku Solved](Images/sudokuSolved.png)
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
