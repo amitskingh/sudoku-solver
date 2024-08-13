@@ -48,6 +48,8 @@ solve.addEventListener("click", () => {
     return
   }
 
+  markProvidedInput()
+
   let res = sudokuSolver(matrix)
   isSolved = true
   if (res === false) {
@@ -101,12 +103,14 @@ function getAllInputValues() {
         rows.push(parseInt(0))
       } else {
         note.innerText = `Provided input is not the number: ${val}`
+        child.children[0].style.backgroundColor = "#e11d48"
+        child.children[0].style.color = "#f8fafc"
         checkInput = false
         return false
       }
     } else {
-      child.children[0].style.backgroundColor = "#fb7185"
-      child.children[0].style.color = "#f8fafc"
+      //   child.children[0].style.backgroundColor = "#fb7185"
+      //   child.children[0].style.color = "#f8fafc"
       rows.push(parseInt(val))
     }
   })
@@ -114,11 +118,11 @@ function getAllInputValues() {
   return checkInput
 }
 
-function checkSuduko(arr) {
-  let len = arr.length
+function checkSuduko(matrix) {
+  let canSolve = true
   for (let i = 0; i < N; i++) {
     for (let j = 0; j < N; j++) {
-      let val = arr[i][j]
+      let val = matrix[i][j]
       if (val === 0) {
         continue
       }
@@ -128,30 +132,29 @@ function checkSuduko(arr) {
         return false
       }
 
-      for (let c = 0; c < N; c++) {
-        if (c === j) {
-          continue
-        }
-
-        if (arr[i][c] == val) {
-          note.innerText = `${val} is same in the row.`
-          return false
-        }
+      matrix[i][j] = 0
+      if (isPossible(matrix, i, j, val) === false) {
+        note.innerText = `This sudoku is unsolvable, please provide valid input.`
+        matrix[i][j] = parseInt(val)((canSolve = false))
+        return canSolve
       }
-
-      for (let r = 0; r < N; r++) {
-        if (r === i) {
-          continue
-        }
-
-        if (arr[r][j] == val) {
-          note.innerText = `${val} is same in the column.`
-          return false
-        }
-      }
+      matrix[i][j] = val
     }
   }
-  return true
+  return canSolve
+}
+
+function markProvidedInput() {
+  var gridVal = document.querySelectorAll(".item")
+  gridVal.forEach((child) => {
+    let val = parseInt(child.querySelector(".inputvalue").value.trim())
+    console.log(isNaN(val))
+    if (isNaN(val) === false && val >= 1 && val <= 9) {
+      console.log(val)
+      child.children[0].style.backgroundColor = "#1d4ed8"
+      child.children[0].style.color = "#f8fafc"
+    }
+  })
 }
 
 function isPossible(matrix, row, col, num) {
